@@ -7,42 +7,47 @@
   <meta name="theme-color" content="#000000" />
   <style>
     :root {
-      --bg-dark: #111111;
-      --bg-card: #1b1b1b;
+      --bg-dark: #050509;
+      --bg-card: #111018;
       --accent-pink: #ff4f9a;
       --accent-pink-soft: #ff9ac5;
       --text-main: #ffffff;
       --text-muted: #bbbbbb;
       --danger: #ff4f4f;
       --success: #4caf50;
-      --border-color: #333333;
+      --border-color: #2a2433;
+      --footer-bg: #08060d;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg-dark);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
+      background: radial-gradient(circle at top, #1b1024 0, #050509 45%, #000000 100%);
       color: var(--text-main);
     }
     header {
-      background: linear-gradient(90deg, #000000, #2b0b1a);
-      padding: 15px 20px;
+      background: linear-gradient(90deg, #050509, #1f0b18, #050509);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo-circle {
       width: 40px; height: 40px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #ffffff, #ff4f9a, #000000);
       display: flex; align-items: center; justify-content: center;
-      font-weight: bold; color: #000; font-size: 18px;
+      font-weight: 800; color: #000; font-size: 18px;
+      box-shadow: 0 0 12px rgba(255,79,154,0.6);
     }
     .logo-text { display: flex; flex-direction: column; }
-    .logo-text-main { font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
+    .logo-text-main { font-size: 17px; font-weight: 700; letter-spacing: 0.4px; }
     .logo-text-sub { font-size: 11px; color: var(--accent-pink-soft); text-transform: uppercase; letter-spacing: 1px; }
-    .header-right { font-size: 12px; color: var(--text-muted); text-align: right; }
+    .header-right { font-size: 11px; color: var(--text-muted); text-align: right; }
     .header-right span { display: block; }
     .lang-toggle { margin-top: 4px; }
     .lang-toggle button {
@@ -55,67 +60,90 @@
       background: var(--accent-pink-soft);
       color: #000;
     }
-    .container { display: flex; min-height: calc(100vh - 60px); }
+
+    .container {
+      display: flex;
+      min-height: calc(100vh - 56px);
+      padding-bottom: 52px; /* space for footer nav */
+    }
     .sidebar {
-      width: 230px; background: #000000;
+      width: 230px; background: #050509;
       border-right: 1px solid var(--border-color);
       padding: 10px;
     }
     .sidebar h3 {
-      margin-top: 0; font-size: 14px;
+      margin-top: 0; font-size: 13px;
       text-transform: uppercase; color: var(--accent-pink-soft);
       letter-spacing: 1px;
     }
     .nav-btn {
-      width: 100%; padding: 10px; margin-bottom: 6px;
-      border-radius: 4px; border: 1px solid var(--border-color);
-      background: #111111; color: var(--text-main);
+      width: 100%; padding: 9px 10px; margin-bottom: 6px;
+      border-radius: 6px; border: 1px solid var(--border-color);
+      background: rgba(10,8,18,0.9); color: var(--text-main);
       text-align: left; cursor: pointer; font-size: 13px;
       display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(8px);
     }
     .nav-btn.active {
-      background: var(--accent-pink);
-      border-color: var(--accent-pink);
-      color: #000; font-weight: bold;
+      background: linear-gradient(90deg, #ff4f9a, #ff9ac5);
+      border-color: #ff4f9a;
+      color: #000; font-weight: 700;
+      box-shadow: 0 0 12px rgba(255,79,154,0.6);
     }
     .nav-btn span.badge {
-      background: #222; padding: 2px 6px;
+      background: #1a1324; padding: 2px 6px;
       border-radius: 10px; font-size: 11px;
       color: var(--accent-pink-soft);
     }
-    .main { flex: 1; padding: 15px; overflow-y: auto; }
+
+    .main { flex: 1; padding: 12px; overflow-y: auto; }
+
     .card {
-      background: var(--bg-card);
-      border-radius: 6px;
+      background: radial-gradient(circle at top left, #1b1024 0, #0a0710 45%, #050509 100%);
+      border-radius: 10px;
       padding: 12px 14px;
       margin-bottom: 12px;
       border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     }
     .card h2 { margin: 0 0 10px 0; font-size: 16px; color: var(--accent-pink-soft); }
     .card h3 { margin: 0 0 8px 0; font-size: 14px; color: var(--accent-pink-soft); }
+
     label {
       display: block; margin-top: 6px;
       font-size: 12px; color: var(--text-muted);
     }
     input, select, textarea {
       width: 100%; padding: 7px; margin-top: 3px;
-      border-radius: 4px; border: 1px solid var(--border-color);
-      background: #111111; color: var(--text-main); font-size: 13px;
+      border-radius: 6px; border: 1px solid var(--border-color);
+      background: rgba(5,5,9,0.9); color: var(--text-main); font-size: 13px;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-pink-soft);
+      box-shadow: 0 0 0 1px rgba(255,79,154,0.4);
     }
     textarea { resize: vertical; min-height: 50px; }
+
     .row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .col-50 { flex: 1 1 48%; }
-    .col-33 { flex: 1 1 32%; }
+    .col-50 { flex: 1 1 48%; min-width: 220px; }
+    .col-33 { flex: 1 1 32%; min-width: 180px; }
+
     .btn {
-      padding: 8px 12px; border-radius: 4px;
+      padding: 8px 12px; border-radius: 999px;
       border: none; cursor: pointer;
-      font-size: 13px; font-weight: bold;
+      font-size: 13px; font-weight: 600;
       margin-top: 8px;
     }
-    .btn-primary { background: var(--accent-pink); color: #000; }
-    .btn-secondary { background: #333333; color: var(--text-main); }
-    .btn-danger { background: var(--danger); color: #fff; }
-    .btn-small { padding: 4px 8px; font-size: 11px; }
+    .btn-primary {
+      background: linear-gradient(90deg, #ff4f9a, #ff9ac5);
+      color: #000;
+      box-shadow: 0 0 12px rgba(255,79,154,0.6);
+    }
+    .btn-secondary { background: #262033; color: var(--text-main); }
+    .btn-danger { background: #b3261e; color: #fff; }
+    .btn-small { padding: 4px 9px; font-size: 11px; border-radius: 999px; }
+
     table {
       width: 100%; border-collapse: collapse;
       font-size: 12px; margin-top: 8px;
@@ -124,7 +152,14 @@
       border: 1px solid var(--border-color);
       padding: 5px; text-align: left;
     }
-    th { background: #151515; color: var(--accent-pink-soft); }
+    th {
+      background: #120c1b;
+      color: var(--accent-pink-soft);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
     .tag {
       display: inline-block; padding: 2px 6px;
       border-radius: 10px; font-size: 10px;
@@ -132,51 +167,96 @@
     }
     .tag-low { background: #3b0000; color: var(--danger); }
     .tag-hot { background: #002b12; color: var(--success); }
+
     .muted { color: var(--text-muted); font-size: 11px; }
+
     .stat-grid { display: flex; flex-wrap: wrap; gap: 10px; }
     .stat-card {
-      flex: 1 1 24%; background: #111111;
-      border-radius: 6px; padding: 8px;
+      flex: 1 1 24%; min-width: 150px;
+      background: radial-gradient(circle at top, #22142f 0, #0a0710 60%);
+      border-radius: 10px; padding: 8px;
       border: 1px solid var(--border-color);
       font-size: 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.7);
     }
     .stat-label { color: var(--text-muted); font-size: 11px; }
-    .stat-value { font-size: 16px; font-weight: bold; margin-top: 4px; }
+    .stat-value { font-size: 16px; font-weight: 700; margin-top: 4px; }
     .stat-positive { color: var(--success); }
     .stat-negative { color: var(--danger); }
+    .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
     .pill {
       display: inline-block; padding: 2px 8px;
       border-radius: 999px; font-size: 11px;
       border: 1px solid var(--border-color);
       margin-right: 4px; margin-bottom: 4px;
+      background: rgba(10,8,18,0.8);
     }
     .pill-active {
       background: var(--accent-pink);
       color: #000; border-color: var(--accent-pink);
     }
+
     .login-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.9);
+      background: radial-gradient(circle at top, #1b1024 0, #050509 45%, #000000 100%);
       display: flex; align-items: center; justify-content: center;
       z-index: 999;
     }
     .login-box {
-      background: #111111; padding: 20px;
-      border-radius: 8px; width: 320px;
+      background: radial-gradient(circle at top, #22142f 0, #050509 60%);
+      padding: 20px;
+      border-radius: 14px; width: 320px;
       border: 1px solid var(--accent-pink-soft);
       text-align: center;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.9);
     }
     .login-box h2 { margin-top: 0; color: var(--accent-pink-soft); }
     .login-box p { font-size: 12px; color: var(--text-muted); }
-    @media (max-width: 800px) {
+
+    .footer-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, #050509, #120c1b, #050509);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      padding: 4px 0;
+      z-index: 20;
+    }
+    .footer-btn {
+      flex: 1;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 3px 0;
+      cursor: pointer;
+    }
+    .footer-btn span.icon {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 1px;
+    }
+    .footer-btn.active {
+      color: var(--accent-pink-soft);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
       .container { flex-direction: column; }
-      .sidebar { width: 100%; display: flex; overflow-x: auto; }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
       .sidebar h3 { display: none; }
       .nav-btn { flex: 1 1 auto; white-space: nowrap; }
     }
   </style>
 </head>
 <body>
+  <!-- LOGIN OVERLAY -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
       <h2 data-key="login_title"></h2>
@@ -190,6 +270,7 @@
     </div>
   </div>
 
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <div class="logo-circle">H</div>
@@ -208,7 +289,9 @@
     </div>
   </header>
 
+  <!-- MAIN LAYOUT -->
   <div class="container">
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <h3 data-key="menu_title"></h3>
       <button class="nav-btn active" data-view="dashboardView">
@@ -231,7 +314,9 @@
       </button>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main class="main">
+      <!-- DASHBOARD -->
       <section id="dashboardView" class="card">
         <h2 data-key="dashboard_title"></h2>
         <div class="row">
@@ -240,18 +325,22 @@
               <div class="stat-card">
                 <div class="stat-label" data-key="stat_today_sales_label"></div>
                 <div class="stat-value" id="statTodaySales">0.00</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label" data-key="stat_week_sales_label"></div>
-                <div class="stat-value" id="statWeekSales">0.00</div>
+                <div class="stat-sub" data-key="stat_today_sales_sub"></div>
               </div>
               <div class="stat-card">
                 <div class="stat-label" data-key="stat_month_sales_label"></div>
                 <div class="stat-value" id="statMonthSales">0.00</div>
+                <div class="stat-sub" data-key="stat_month_sales_sub"></div>
               </div>
               <div class="stat-card">
                 <div class="stat-label" data-key="stat_profit_label"></div>
                 <div class="stat-value" id="statProfit">0.00</div>
+                <div class="stat-sub" data-key="stat_profit_sub"></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label" data-key="stat_margin_label"></div>
+                <div class="stat-value" id="statMargin">0%</div>
+                <div class="stat-sub" data-key="stat_margin_sub"></div>
               </div>
             </div>
           </div>
@@ -265,7 +354,7 @@
               <span class="pill" id="countInvoices"></span>
             </div>
             <p class="muted" style="margin-top:10px;">
-              💄 Lipsticks • 💍 Jewelry • 🩲 Undergarments — sab ka stock, sales aur profit yahan se control karo.
+              💄 Lipsticks • 💍 Jewelry • 🩲 Undergarments — sab ka stock, daily sale, monthly sale aur profit yahan se control karo.
             </p>
           </div>
         </div>
@@ -285,21 +374,29 @@
         </table>
       </section>
 
+      <!-- yahan se aage: Inventory, Sales, Expenses, Invoices, Settings, JS sab NEXT PARTS me aayega -->
+            <!-- INVENTORY -->
       <section id="inventoryView" class="card" style="display:none;">
         <h2 data-key="inventory_title"></h2>
+
         <div class="row">
+          <!-- LEFT SIDE: ADD / EDIT PRODUCT -->
           <div class="col-50">
             <h3 data-key="inventory_add_title"></h3>
+
             <label data-key="inventory_code_label"></label>
             <input type="text" id="invCode" />
+
             <label data-key="inventory_name_label"></label>
             <input type="text" id="invName" />
+
             <label data-key="inventory_category_label"></label>
             <select id="invCategory">
               <option value="Cosmetics" data-key="cat_cosmetics"></option>
               <option value="Jewelry" data-key="cat_jewelry"></option>
               <option value="Undergarments" data-key="cat_undergarments"></option>
             </select>
+
             <div class="row">
               <div class="col-50">
                 <label data-key="inventory_stock_label"></label>
@@ -310,6 +407,7 @@
                 <input type="number" id="invLowStock" min="0" value="5" />
               </div>
             </div>
+
             <div class="row">
               <div class="col-50">
                 <label data-key="inventory_cost_label"></label>
@@ -320,21 +418,28 @@
                 <input type="number" id="invPrice" min="0" step="0.01" value="0" />
               </div>
             </div>
+
             <label>
               <input type="checkbox" id="invHotSale" />
               <span data-key="inventory_hotsale_label"></span>
             </label>
+
             <button class="btn btn-primary" id="btnSaveProduct" data-key="btn_save_product"></button>
             <button class="btn btn-secondary btn-small" id="btnClearProduct" data-key="btn_clear"></button>
+
             <p class="muted" data-key="inventory_tip"></p>
           </div>
+
+          <!-- RIGHT SIDE: PRODUCT LIST -->
           <div class="col-50">
             <h3 data-key="inventory_list_title"></h3>
+
             <div class="row">
               <div class="col-50">
                 <label data-key="inventory_search_label"></label>
                 <input type="text" id="invSearch" />
               </div>
+
               <div class="col-50">
                 <label data-key="inventory_filter_label"></label>
                 <select id="invFilterCategory">
@@ -345,6 +450,7 @@
                 </select>
               </div>
             </div>
+
             <table id="invTable">
               <thead>
                 <tr>
@@ -362,14 +468,18 @@
           </div>
         </div>
       </section>
-
+            <!-- SALES / POS -->
       <section id="salesView" class="card" style="display:none;">
         <h2 data-key="sales_title"></h2>
+
         <div class="row">
+          <!-- LEFT SIDE: SEARCH PRODUCTS -->
           <div class="col-50">
             <h3 data-key="sales_add_title"></h3>
+
             <label data-key="sales_search_label"></label>
             <input type="text" id="posSearch" />
+
             <table id="posSearchTable">
               <thead>
                 <tr>
@@ -384,8 +494,11 @@
               <tbody></tbody>
             </table>
           </div>
+
+          <!-- RIGHT SIDE: CART -->
           <div class="col-50">
             <h3 data-key="sales_cart_title"></h3>
+
             <table id="cartTable">
               <thead>
                 <tr>
@@ -398,37 +511,51 @@
               </thead>
               <tbody></tbody>
             </table>
+
             <div style="margin-top:8px;">
               <span class="pill" id="cartItemsCount"></span>
               <span class="pill" id="cartTotalAmount"></span>
             </div>
+
             <label data-key="sales_customer_label"></label>
             <input type="text" id="cartCustomerName" />
+
             <label data-key="sales_notes_label"></label>
             <textarea id="cartNotes"></textarea>
+
             <button class="btn btn-primary" id="btnCheckout" data-key="btn_checkout"></button>
             <button class="btn btn-secondary btn-small" id="btnClearCart" data-key="btn_clear_cart"></button>
           </div>
         </div>
       </section>
-
+            <!-- EXPENSES -->
       <section id="expensesView" class="card" style="display:none;">
         <h2 data-key="expenses_title"></h2>
+
         <div class="row">
+          <!-- LEFT: ADD EXPENSE -->
           <div class="col-50">
             <h3 data-key="expenses_add_title"></h3>
+
             <label data-key="expenses_title_label"></label>
             <input type="text" id="expTitle" />
+
             <label data-key="expenses_amount_label"></label>
             <input type="number" id="expAmount" min="0" step="0.01" />
+
             <label data-key="expenses_date_label"></label>
             <input type="date" id="expDate" />
+
             <label data-key="expenses_note_label"></label>
             <textarea id="expNote"></textarea>
+
             <button class="btn btn-primary" id="btnAddExpense" data-key="btn_add_expense"></button>
           </div>
+
+          <!-- RIGHT: EXPENSE LIST -->
           <div class="col-50">
             <h3 data-key="expenses_list_title"></h3>
+
             <table id="expTable">
               <thead>
                 <tr>
@@ -440,21 +567,27 @@
               </thead>
               <tbody></tbody>
             </table>
+
             <p class="muted">
               <span data-key="expenses_total_label"></span>
-              <span id="expTotal">0.00</span> AED
+              <span id="expTotal">0.00</span> PKR
             </p>
           </div>
         </div>
       </section>
 
+      <!-- INVOICES -->
       <section id="invoicesView" class="card" style="display:none;">
         <h2 data-key="invoices_title"></h2>
+
         <div class="row">
+          <!-- LEFT: INVOICE LIST -->
           <div class="col-50">
             <h3 data-key="invoices_list_title"></h3>
+
             <label data-key="invoices_search_label"></label>
             <input type="text" id="invSearchInvoice" />
+
             <table id="invoiceTable">
               <thead>
                 <tr>
@@ -469,15 +602,21 @@
               <tbody></tbody>
             </table>
           </div>
+
+          <!-- RIGHT: INVOICE DETAIL -->
           <div class="col-50">
             <h3 data-key="invoices_detail_title"></h3>
             <div id="invoiceDetail" class="muted" data-key="invoices_detail_placeholder"></div>
+            <button class="btn btn-secondary btn-small" id="btnPrintSlip">Print Slip</button>
+            <button class="btn btn-secondary btn-small" id="btnPrintA4">Print A4</button>
           </div>
         </div>
       </section>
 
+      <!-- SETTINGS -->
       <section id="settingsView" class="card" style="display:none;">
         <h2 data-key="settings_title"></h2>
+
         <h3 data-key="settings_login_title"></h3>
         <label data-key="settings_user_label"></label>
         <input type="text" id="setUser" />
@@ -487,8 +626,10 @@
 
         <h3 style="margin-top:15px;" data-key="settings_backup_title"></h3>
         <p class="muted" data-key="settings_backup_text"></p>
+
         <button class="btn btn-secondary btn-small" id="btnExportData" data-key="btn_export"></button>
         <button class="btn btn-danger btn-small" id="btnClearAllData" data-key="btn_clear_all"></button>
+
         <label data-key="settings_backup_label"></label>
         <textarea id="backupJson"></textarea>
         <button class="btn btn-primary btn-small" id="btnImportData" data-key="btn_import"></button>
@@ -496,7 +637,31 @@
     </main>
   </div>
 
-  <script>
+  <!-- FOOTER NAVIGATION -->
+  <div class="footer-nav">
+    <div class="footer-btn active" data-view="dashboardView">
+      <span class="icon">🏠</span>
+      <span>Home</span>
+    </div>
+    <div class="footer-btn" data-view="inventoryView">
+      <span class="icon">📦</span>
+      <span>Stock</span>
+    </div>
+    <div class="footer-btn" data-view="salesView">
+      <span class="icon">🛒</span>
+      <span>Sales</span>
+    </div>
+    <div class="footer-btn" data-view="invoicesView">
+      <span class="icon">📄</span>
+      <span>Bills</span>
+    </div>
+    <div class="footer-btn" data-view="settingsView">
+      <span class="icon">⚙️</span>
+      <span>Settings</span>
+    </div>
+  </div>
+    <script>
+    // ---------- LANGUAGE PACKS ----------
     const langEN = {
       app_title: "Hoorian Cosmetics & Jewelry",
       app_subtitle: "beauty • shine • elegance",
@@ -522,13 +687,17 @@
       login_hint: "Default login: admin / admin (local only).",
 
       dashboard_title: "Sales Dashboard",
-      stat_today_sales_label: "Today Sales (AED)",
-      stat_week_sales_label: "This Week Sales (AED)",
-      stat_month_sales_label: "This Month Sales (AED)",
-      stat_profit_label: "Total Profit (Sales - Expenses)",
+      stat_today_sales_label: "Today Sales (PKR)",
+      stat_today_sales_sub: "Aaj ki total sales (invoices se).",
+      stat_month_sales_label: "This Month Sales (PKR)",
+      stat_month_sales_sub: "Is month ki total sales.",
+      stat_profit_label: "Total Profit (PKR)",
+      stat_profit_sub: "Total Sales - Total Expenses.",
+      stat_margin_label: "Profit Margin (%)",
+      stat_margin_sub: "Profit ÷ Sales × 100.",
       dashboard_quick_title: "Quick Overview",
       dashboard_quick_text:
-        "• Low stock items and hot sale items are highlighted below.\n• All data is stored locally in this browser (localStorage).\n• Use Inventory tab to add products and manage stock in/out.\n• Use Sales / POS tab to create cart, checkout and invoices.",
+        "• Daily & monthly sales invoices se auto calculate hoti hain.\n• Profit expenses ko minus karke nikalta hai.\n• Inventory se stock manage karein, Sales se invoices banayein.\n• Sab data sirf is device ke browser mein localStorage mein save hota hai.",
       dashboard_stock_title: "Low Stock & Hot Sale Items",
 
       inventory_title: "Inventory & Stock",
@@ -538,8 +707,8 @@
       inventory_category_label: "Category",
       inventory_stock_label: "Stock Quantity",
       inventory_lowstock_label: "Low Stock Level",
-      inventory_cost_label: "Cost Price (AED)",
-      inventory_price_label: "Selling Price (AED)",
+      inventory_cost_label: "Cost Price (PKR)",
+      inventory_price_label: "Selling Price (PKR)",
       inventory_hotsale_label: "Mark as Hot Sale Item",
       btn_save_product: "Save / Update Product",
       btn_clear: "Clear",
@@ -566,7 +735,7 @@
       expenses_title: "Shop Expenses",
       expenses_add_title: "Add Expense",
       expenses_title_label: "Title",
-      expenses_amount_label: "Amount (AED)",
+      expenses_amount_label: "Amount (PKR)",
       expenses_date_label: "Date",
       expenses_note_label: "Note",
       btn_add_expense: "Add Expense",
@@ -597,16 +766,16 @@
       tbl_category: "Category",
       tbl_category_short: "Cat",
       tbl_stock: "Stock",
-      tbl_price: "Price",
+      tbl_price: "Price (PKR)",
       tbl_tags: "Tags",
       tbl_action: "Action",
       tbl_add: "Add",
       tbl_item: "Item",
       tbl_qty: "Qty",
-      tbl_total: "Total",
+      tbl_total: "Total (PKR)",
       tbl_date: "Date",
       tbl_title: "Title",
-      tbl_amount: "Amount",
+      tbl_amount: "Amount (PKR)",
       tbl_invoice_no: "No.",
       tbl_customer: "Customer",
       tbl_items: "Items",
@@ -638,13 +807,17 @@
       login_hint: "Default login: admin / admin (sirf is device par).",
 
       dashboard_title: "Sales Dashboard (Sales ka Jayeza)",
-      stat_today_sales_label: "Aaj ki Sales (AED)",
-      stat_week_sales_label: "Is Week ki Sales (AED)",
-      stat_month_sales_label: "Is Month ki Sales (AED)",
-      stat_profit_label: "Total Profit (Sales - Kharchay)",
+      stat_today_sales_label: "Aaj ki Sales (PKR)",
+      stat_today_sales_sub: "Sirf aaj ke invoices ki total.",
+      stat_month_sales_label: "Is Month ki Sales (PKR)",
+      stat_month_sales_sub: "Is month ke sab invoices ki total.",
+      stat_profit_label: "Total Profit (PKR)",
+      stat_profit_sub: "Total Sales - Total Kharchay.",
+      stat_margin_label: "Profit Margin (%)",
+      stat_margin_sub: "Profit ko Sales se divide karke percentage.",
       dashboard_quick_title: "Quick Overview (Mukhtasar Jayeza)",
       dashboard_quick_text:
-        "• Low stock aur hot sale items neeche highlight honge.\n• Saara data sirf is browser mein localStorage mein save hota hai.\n• Inventory tab se products add karein aur stock manage karein.\n• Sales / POS tab se cart banayein, checkout karein aur invoice banayein.",
+        "• Daily & monthly sales invoices se auto calculate hoti hain.\n• Profit kharchay minus karke nikalta hai.\n• Inventory se products add karein, Sales se invoices banayein.\n• Saara data sirf is browser mein localStorage mein save hota hai.",
       dashboard_stock_title: "Low Stock & Hot Sale Items",
 
       inventory_title: "Inventory & Stock (Saman ka Record)",
@@ -654,8 +827,8 @@
       inventory_category_label: "Category (Qism)",
       inventory_stock_label: "Stock Quantity (Kitna Saman)",
       inventory_lowstock_label: "Low Stock Level (Kam Stock Limit)",
-      inventory_cost_label: "Cost Price (AED) (Khareed Rate)",
-      inventory_price_label: "Selling Price (AED) (Sale Rate)",
+      inventory_cost_label: "Cost Price (PKR) (Khareed Rate)",
+      inventory_price_label: "Selling Price (PKR) (Sale Rate)",
       inventory_hotsale_label: "Isay Hot Sale Item mark karein",
       btn_save_product: "Product Save / Update Karein",
       btn_clear: "Clear (Saaf)",
@@ -682,7 +855,7 @@
       expenses_title: "Shop Kharchay",
       expenses_add_title: "Naya Kharcha Add Karein",
       expenses_title_label: "Title (Jaise Rent, Salary)",
-      expenses_amount_label: "Amount (AED)",
+      expenses_amount_label: "Amount (PKR)",
       expenses_date_label: "Date (Tareekh)",
       expenses_note_label: "Note (Zaroori ho to)",
       btn_add_expense: "Kharcha Add Karein",
@@ -713,16 +886,16 @@
       tbl_category: "Category",
       tbl_category_short: "Cat",
       tbl_stock: "Stock",
-      tbl_price: "Price",
+      tbl_price: "Price (PKR)",
       tbl_tags: "Tags",
       tbl_action: "Action",
       tbl_add: "Add",
       tbl_item: "Item",
       tbl_qty: "Qty",
-      tbl_total: "Total",
+      tbl_total: "Total (PKR)",
       tbl_date: "Date",
       tbl_title: "Title",
-      tbl_amount: "Amount",
+      tbl_amount: "Amount (PKR)",
       tbl_invoice_no: "No.",
       tbl_customer: "Customer",
       tbl_items: "Items",
@@ -730,14 +903,22 @@
     };
 
     const KEY_LANG = "hoorian_lang";
+    const KEY_PRODUCTS = "hoorian_products";
+    const KEY_INVOICES = "hoorian_invoices";
+    const KEY_EXPENSES = "hoorian_expenses";
+    const KEY_LOGIN = "hoorian_login";
+
+    let products = [];
+    let invoices = [];
+    let expenses = [];
+    let cart = [];
+    window.currentUser = null;
 
     function applyLanguage(lang) {
       const dict = lang === "UR" ? langUR : langEN;
       document.querySelectorAll("[data-key]").forEach(el => {
         const key = el.getAttribute("data-key");
-        if (dict[key] !== undefined) {
-          el.textContent = dict[key];
-        }
+        if (dict[key] !== undefined) el.textContent = dict[key];
       });
       const headerUser = document.getElementById("headerUser");
       if (headerUser && window.currentUser) {
@@ -748,126 +929,137 @@
       localStorage.setItem(KEY_LANG, lang);
     }
 
-    const KEY_PRODUCTS = 'hoorian_products';
-    const KEY_INVOICES = 'hoorian_invoices';
-    const KEY_EXPENSES = 'hoorian_expenses';
-    const KEY_LOGIN = 'hoorian_login';
-
-    let products = [];
-    let invoices = [];
-    let expenses = [];
-    let cart = [];
-    window.currentUser = null;
-
     function loadData() {
-      products = JSON.parse(localStorage.getItem(KEY_PRODUCTS) || '[]');
-      invoices = JSON.parse(localStorage.getItem(KEY_INVOICES) || '[]');
-      expenses = JSON.parse(localStorage.getItem(KEY_EXPENSES) || '[]');
-      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || 'null');
+      products = JSON.parse(localStorage.getItem(KEY_PRODUCTS) || "[]");
+      invoices = JSON.parse(localStorage.getItem(KEY_INVOICES) || "[]");
+      expenses = JSON.parse(localStorage.getItem(KEY_EXPENSES) || "[]");
+      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || "null");
       if (!login) {
-        localStorage.setItem(
-          KEY_LOGIN,
-          JSON.stringify({ username: 'admin', password: 'admin' })
-        );
+        localStorage.setItem(KEY_LOGIN, JSON.stringify({ username: "admin", password: "admin" }));
       }
       if (products.length === 0) {
         products = [
-          { code: 'LIP-RED-01', name: 'Matte Lipstick Red', category: 'Cosmetics', stock: 20, lowStock: 5, cost: 10, price: 25, hotSale: true },
-          { code: 'LIP-NUDE-02', name: 'Nude Lipstick', category: 'Cosmetics', stock: 15, lowStock: 5, cost: 9, price: 22, hotSale: true },
-          { code: 'JR-RING-01', name: 'Gold Plated Ring', category: 'Jewelry', stock: 10, lowStock: 3, cost: 30, price: 65, hotSale: true },
-          { code: 'JR-SET-01', name: 'Bridal Jewelry Set', category: 'Jewelry', stock: 5, lowStock: 2, cost: 80, price: 150, hotSale: false },
-          { code: 'UG-BRA-01', name: 'Comfort Bra', category: 'Undergarments', stock: 25, lowStock: 8, cost: 12, price: 30, hotSale: false },
-          { code: 'UG-SET-01', name: 'Ladies Undergarment Set', category: 'Undergarments', stock: 18, lowStock: 5, cost: 18, price: 40, hotSale: true }
+          { code: "LIP-RED-01", name: "Matte Lipstick Red", category: "Cosmetics", stock: 20, lowStock: 5, cost: 300, price: 750, hotSale: true },
+          { code: "LIP-NUDE-02", name: "Nude Lipstick", category: "Cosmetics", stock: 15, lowStock: 5, cost: 280, price: 700, hotSale: true },
+          { code: "JR-RING-01", name: "Gold Plated Ring", category: "Jewelry", stock: 10, lowStock: 3, cost: 1200, price: 2500, hotSale: true },
+          { code: "JR-SET-01", name: "Bridal Jewelry Set", category: "Jewelry", stock: 5, lowStock: 2, cost: 3500, price: 6500, hotSale: false },
+          { code: "UG-BRA-01", name: "Comfort Bra", category: "Undergarments", stock: 25, lowStock: 8, cost: 400, price: 900, hotSale: false },
+          { code: "UG-SET-01", name: "Ladies Undergarment Set", category: "Undergarments", stock: 18, lowStock: 5, cost: 600, price: 1300, hotSale: true }
         ];
         saveProducts();
       }
     }
+
     function saveProducts() { localStorage.setItem(KEY_PRODUCTS, JSON.stringify(products)); }
     function saveInvoices() { localStorage.setItem(KEY_INVOICES, JSON.stringify(invoices)); }
     function saveExpenses() { localStorage.setItem(KEY_EXPENSES, JSON.stringify(expenses)); }
 
     function formatDate(d) {
       const dt = new Date(d);
-      if (isNaN(dt)) return '';
+      if (isNaN(dt)) return "";
       return dt.toISOString().slice(0, 10);
     }
     function todayStr() { return new Date().toISOString().slice(0, 10); }
     function sameDay(d1, d2) { return formatDate(d1) === formatDate(d2); }
-    function weekOfYear(date) {
-      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-      const dayNum = d.getUTCDay() || 7;
-      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-      const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-      return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
-    }
-    function monthKey(date) { return date.getFullYear() + '-' + (date.getMonth() + 1); }
+    function monthKey(date) { return date.getFullYear() + "-" + (date.getMonth() + 1); }
+
     function generateInvoiceNumber() {
-      const base = 'INV';
+      const base = "INV";
       const num = invoices.length + 1;
-      return base + String(num).padStart(4, '0');
+      return base + String(num).padStart(4, "0");
     }
+
     function updateHeaderDate() {
-      const el = document.getElementById('headerDate');
+      const el = document.getElementById("headerDate");
       const now = new Date();
       el.textContent = now.toLocaleString();
     }
     setInterval(updateHeaderDate, 60000);
+      // ---------- LOGIN ----------
+    const loginOverlay = document.getElementById("loginOverlay");
 
-    const loginOverlay = document.getElementById('loginOverlay');
-    const loginBtn = document.getElementById('loginBtn');
-    loginBtn.addEventListener('click', () => {
-      const u = document.getElementById('loginUser').value.trim() || 'admin';
-      const p = document.getElementById('loginPass').value.trim() || 'admin';
-      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || 'null');
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const u = document.getElementById("loginUser").value.trim() || "admin";
+      const p = document.getElementById("loginPass").value.trim() || "admin";
+
+      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || "null");
+
       if (login && login.username === u && login.password === p) {
         window.currentUser = u;
-        loginOverlay.style.display = 'none';
-        const lang = localStorage.getItem(KEY_LANG) || 'EN';
-        document.getElementById('headerUser').textContent = "User: " + window.currentUser;
+        loginOverlay.style.display = "none";
+
+        const lang = localStorage.getItem(KEY_LANG) || "EN";
+        document.getElementById("headerUser").textContent = "User: " + window.currentUser;
         applyLanguage(lang);
       } else {
-        alert('Wrong username or password');
+        alert("Wrong username or password");
       }
     });
 
-    const navButtons = document.querySelectorAll('.nav-btn');
+    // ---------- NAVIGATION ----------
+    const navButtons = document.querySelectorAll(".nav-btn");
     const views = {
-      dashboardView: document.getElementById('dashboardView'),
-      inventoryView: document.getElementById('inventoryView'),
-      salesView: document.getElementById('salesView'),
-      expensesView: document.getElementById('expensesView'),
-      invoicesView: document.getElementById('invoicesView'),
-      settingsView: document.getElementById('settingsView')
+      dashboardView: document.getElementById("dashboardView"),
+      inventoryView: document.getElementById("inventoryView"),
+      salesView: document.getElementById("salesView"),
+      expensesView: document.getElementById("expensesView"),
+      invoicesView: document.getElementById("invoicesView"),
+      settingsView: document.getElementById("settingsView")
     };
+
     navButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const view = btn.getAttribute('data-view');
-        Object.keys(views).forEach(v => {
-          views[v].style.display = v === view ? 'block' : 'none';
-        });
-        navButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        refreshAll();
+      btn.addEventListener("click", () => {
+        const view = btn.getAttribute("data-view");
+        showView(view);
       });
     });
 
-    const invCode = document.getElementById('invCode');
-    const invName = document.getElementById('invName');
-    const invCategory = document.getElementById('invCategory');
-    const invStock = document.getElementById('invStock');
-    const invLowStock = document.getElementById('invLowStock');
-    const invCost = document.getElementById('invCost');
-    const invPrice = document.getElementById('invPrice');
-    const invHotSale = document.getElementById('invHotSale');
-    const invTableBody = document.querySelector('#invTable tbody');
-    const invSearch = document.getElementById('invSearch');
-    const invFilterCategory = document.getElementById('invFilterCategory');
+    const footerBtns = document.querySelectorAll(".footer-btn");
+    footerBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const view = btn.getAttribute("data-view");
+        showView(view);
+      });
+    });
+
+    function showView(view) {
+      Object.keys(views).forEach(v => {
+        views[v].style.display = v === view ? "block" : "none";
+      });
+
+      navButtons.forEach(b =>
+        b.classList.toggle("active", b.getAttribute("data-view") === view)
+      );
+
+      footerBtns.forEach(b =>
+        b.classList.toggle("active", b.getAttribute("data-view") === view)
+      );
+
+      refreshAll();
+    }
+
+    // ---------- INVENTORY FORM ----------
+    const invCode = document.getElementById("invCode");
+    const invName = document.getElementById("invName");
+    const invCategory = document.getElementById("invCategory");
+    const invStock = document.getElementById("invStock");
+    const invLowStock = document.getElementById("invLowStock");
+    const invCost = document.getElementById("invCost");
+    const invPrice = document.getElementById("invPrice");
+    const invHotSale = document.getElementById("invHotSale");
+
+    const invTableBody = document.querySelector("#invTable tbody");
+    const invSearch = document.getElementById("invSearch");
+    const invFilterCategory = document.getElementById("invFilterCategory");
+
     let editingProductCode = null;
 
     function renderInventory() {
-      invTableBody.innerHTML = '';
+      invTableBody.innerHTML = "";
+
       const search = invSearch.value.trim().toLowerCase();
       const cat = invFilterCategory.value;
+
       products.forEach(p => {
         if (
           (search &&
@@ -876,46 +1068,52 @@
               p.code.toLowerCase().includes(search)
             )) ||
           (cat && p.category !== cat)
-        ) {
-          return;
-        }
-        const tr = document.createElement('tr');
+        ) return;
+
+        const tr = document.createElement("tr");
+
         const tags = [];
         if (p.stock <= p.lowStock) tags.push('<span class="tag tag-low">Low</span>');
         if (p.hotSale) tags.push('<span class="tag tag-hot">Hot</span>');
+
         tr.innerHTML = `
           <td>${p.code}</td>
           <td>${p.name}</td>
           <td>${p.category}</td>
           <td>${p.stock}</td>
-          <td>${p.price.toFixed(2)}</td>
-          <td>${tags.join(' ')}</td>
+          <td>${p.price.toFixed(0)}</td>
+          <td>${tags.join(" ")}</td>
           <td>
             <button class="btn btn-secondary btn-small" data-code="${p.code}" data-action="edit">Edit</button>
             <button class="btn btn-danger btn-small" data-code="${p.code}" data-action="delete">X</button>
           </td>
         `;
+
         invTableBody.appendChild(tr);
       });
     }
 
-    document.getElementById('btnSaveProduct').addEventListener('click', () => {
+    // ---------- SAVE PRODUCT ----------
+    document.getElementById("btnSaveProduct").addEventListener("click", () => {
       const code = invCode.value.trim();
       const name = invName.value.trim();
+
       if (!code || !name) {
-        alert('Code and Name required');
+        alert("Code and Name required");
         return;
       }
+
       const category = invCategory.value;
-      const stock = parseInt(invStock.value || '0', 10);
-      const lowStock = parseInt(invLowStock.value || '0', 10);
-      const cost = parseFloat(invCost.value || '0');
-      const price = parseFloat(invPrice.value || '0');
+      const stock = parseInt(invStock.value || "0", 10);
+      const lowStock = parseInt(invLowStock.value || "0", 10);
+      const cost = parseFloat(invCost.value || "0");
+      const price = parseFloat(invPrice.value || "0");
       const hotSale = invHotSale.checked;
 
       const existingIndex = products.findIndex(p => p.code === code);
+
       if (existingIndex >= 0 && editingProductCode !== code) {
-        alert('Code already exists. Use Edit or change code.');
+        alert("Code already exists. Use Edit or change code.");
         return;
       }
 
@@ -926,11 +1124,8 @@
         if (idx >= 0) products[idx] = product;
       } else if (editingProductCode && editingProductCode !== code) {
         const idx = products.findIndex(p => p.code === editingProductCode);
-        if (idx >= 0) {
-          products.splice(idx, 1, product);
-        } else {
-          products.push(product);
-        }
+        if (idx >= 0) products.splice(idx, 1, product);
+        else products.push(product);
       } else {
         products.push(product);
       }
@@ -939,32 +1134,38 @@
       clearProductForm();
       renderInventory();
       refreshDashboard();
-      alert('Product saved');
+      alert("Product saved");
     });
 
     function clearProductForm() {
       editingProductCode = null;
-      invCode.value = '';
-      invName.value = '';
-      invCategory.value = 'Cosmetics';
-      invStock.value = '0';
-      invLowStock.value = '5';
-      invCost.value = '0';
-      invPrice.value = '0';
+      invCode.value = "";
+      invName.value = "";
+      invCategory.value = "Cosmetics";
+      invStock.value = "0";
+      invLowStock.value = "5";
+      invCost.value = "0";
+      invPrice.value = "0";
       invHotSale.checked = false;
     }
-    document.getElementById('btnClearProduct').addEventListener('click', clearProductForm);
 
-    invTableBody.addEventListener('click', e => {
-      const btn = e.target.closest('button');
+    document.getElementById("btnClearProduct").addEventListener("click", clearProductForm);
+
+    // ---------- EDIT / DELETE ----------
+    invTableBody.addEventListener("click", e => {
+      const btn = e.target.closest("button");
       if (!btn) return;
-      const code = btn.getAttribute('data-code');
-      const action = btn.getAttribute('data-action');
+
+      const code = btn.getAttribute("data-code");
+      const action = btn.getAttribute("data-action");
+
       const idx = products.findIndex(p => p.code === code);
       if (idx < 0) return;
-      if (action === 'edit') {
+
+      if (action === "edit") {
         const p = products[idx];
         editingProductCode = p.code;
+
         invCode.value = p.code;
         invName.value = p.name;
         invCategory.value = p.category;
@@ -973,8 +1174,9 @@
         invCost.value = p.cost;
         invPrice.value = p.price;
         invHotSale.checked = p.hotSale;
-      } else if (action === 'delete') {
-        if (confirm('Delete product ' + products[idx].name + '?')) {
+
+      } else if (action === "delete") {
+        if (confirm("Delete product " + products[idx].name + "?")) {
           products.splice(idx, 1);
           saveProducts();
           renderInventory();
@@ -983,20 +1185,28 @@
       }
     });
 
-    invSearch.addEventListener('input', renderInventory);
-    invFilterCategory.addEventListener('change', renderInventory);
+    invSearch.addEventListener("input", renderInventory);
+    invFilterCategory.addEventListener("change", renderInventory);
+        /* -------------------------
+       SALES / POS SYSTEM
+    --------------------------*/
 
-    const posSearch = document.getElementById('posSearch');
-    const posSearchTableBody = document.querySelector('#posSearchTable tbody');
-    const cartTableBody = document.querySelector('#cartTable tbody');
-    const cartItemsCount = document.getElementById('cartItemsCount');
-    const cartTotalAmount = document.getElementById('cartTotalAmount');
-    const cartCustomerName = document.getElementById('cartCustomerName');
-    const cartNotes = document.getElementById('cartNotes');
+    const posSearch = document.getElementById("posSearch");
+    const posSearchTableBody = document.querySelector("#posSearchTable tbody");
 
+    const cartTableBody = document.querySelector("#cartTable tbody");
+    const cartItemsCount = document.getElementById("cartItemsCount");
+    const cartTotalAmount = document.getElementById("cartTotalAmount");
+
+    const cartCustomerName = document.getElementById("cartCustomerName");
+    const cartNotes = document.getElementById("cartNotes");
+
+    // SEARCH PRODUCTS FOR POS
     function renderPosSearch() {
-      posSearchTableBody.innerHTML = '';
+      posSearchTableBody.innerHTML = "";
+
       const search = posSearch.value.trim().toLowerCase();
+
       products.forEach(p => {
         if (
           search &&
@@ -1004,122 +1214,162 @@
             p.name.toLowerCase().includes(search) ||
             p.code.toLowerCase().includes(search)
           )
-        ) {
-          return;
-        }
-        const tr = document.createElement('tr');
+        ) return;
+
+        const tr = document.createElement("tr");
+
         tr.innerHTML = `
           <td>${p.code}</td>
           <td>${p.name}</td>
           <td>${p.category}</td>
           <td>${p.stock}</td>
-          <td>${p.price.toFixed(2)}</td>
+          <td>${p.price.toFixed(0)}</td>
           <td><button class="btn btn-primary btn-small" data-code="${p.code}">Add</button></td>
         `;
+
         posSearchTableBody.appendChild(tr);
       });
     }
-    posSearch.addEventListener('input', renderPosSearch);
 
-    posSearchTableBody.addEventListener('click', e => {
-      const btn = e.target.closest('button');
+    posSearch.addEventListener("input", renderPosSearch);
+
+    // ADD TO CART
+    posSearchTableBody.addEventListener("click", e => {
+      const btn = e.target.closest("button");
       if (!btn) return;
-      const code = btn.getAttribute('data-code');
+
+      const code = btn.getAttribute("data-code");
       const product = products.find(p => p.code === code);
+
       if (!product) return;
+
       if (product.stock <= 0) {
-        alert('No stock available for this item');
+        alert("No stock available for this item");
         return;
       }
+
       const existing = cart.find(c => c.code === code);
+
       if (existing) {
         if (existing.qty + 1 > product.stock) {
-          alert('Not enough stock');
+          alert("Not enough stock");
           return;
         }
         existing.qty += 1;
       } else {
-        cart.push({ code: product.code, name: product.name, price: product.price, qty: 1 });
+        cart.push({
+          code: product.code,
+          name: product.name,
+          price: product.price,
+          qty: 1
+        });
       }
+
       renderCart();
     });
 
+    // RENDER CART
     function renderCart() {
-      cartTableBody.innerHTML = '';
+      cartTableBody.innerHTML = "";
+
       let total = 0;
+
       cart.forEach((item, index) => {
         const lineTotal = item.qty * item.price;
         total += lineTotal;
-        const tr = document.createElement('tr');
+
+        const tr = document.createElement("tr");
+
         tr.innerHTML = `
           <td>${item.name}</td>
           <td>
             <input type="number" min="1" value="${item.qty}" data-index="${index}" class="cart-qty" style="width:60px;" />
           </td>
-          <td>${item.price.toFixed(2)}</td>
-          <td>${lineTotal.toFixed(2)}</td>
+          <td>${item.price.toFixed(0)}</td>
+          <td>${lineTotal.toFixed(0)}</td>
           <td><button class="btn btn-danger btn-small" data-index="${index}">X</button></td>
         `;
+
         cartTableBody.appendChild(tr);
       });
-      cartItemsCount.textContent = 'Items: ' + cart.length;
-      cartTotalAmount.textContent = 'Total: ' + total.toFixed(2) + ' AED';
+
+      cartItemsCount.textContent = "Items: " + cart.length;
+      cartTotalAmount.textContent = "Total: " + total.toFixed(0) + " PKR";
     }
 
-    cartTableBody.addEventListener('input', e => {
-      if (e.target.classList.contains('cart-qty')) {
-        const index = parseInt(e.target.getAttribute('data-index'), 10);
-        const qty = parseInt(e.target.value || '1', 10);
+    // CHANGE QTY IN CART
+    cartTableBody.addEventListener("input", e => {
+      if (e.target.classList.contains("cart-qty")) {
+        const index = parseInt(e.target.getAttribute("data-index"), 10);
+        const qty = parseInt(e.target.value || "1", 10);
+
         if (isNaN(qty) || qty <= 0) return;
+
         const item = cart[index];
         const product = products.find(p => p.code === item.code);
+
         if (!product) return;
+
         if (qty > product.stock) {
-          alert('Not enough stock');
+          alert("Not enough stock");
           e.target.value = product.stock;
           cart[index].qty = product.stock;
         } else {
           cart[index].qty = qty;
         }
+
         renderCart();
       }
     });
 
-    cartTableBody.addEventListener('click', e => {
-      const btn = e.target.closest('button');
+    // REMOVE ITEM FROM CART
+    cartTableBody.addEventListener("click", e => {
+      const btn = e.target.closest("button");
       if (!btn) return;
-      const index = parseInt(btn.getAttribute('data-index'), 10);
+
+      const index = parseInt(btn.getAttribute("data-index"), 10);
       cart.splice(index, 1);
+
       renderCart();
     });
 
-    document.getElementById('btnClearCart').addEventListener('click', () => {
-      if (confirm('Clear cart?')) {
+    // CLEAR CART
+    document.getElementById("btnClearCart").addEventListener("click", () => {
+      if (confirm("Clear cart?")) {
         cart = [];
         renderCart();
       }
     });
 
-    document.getElementById('btnCheckout').addEventListener('click', () => {
+    // CHECKOUT
+    document.getElementById("btnCheckout").addEventListener("click", () => {
       if (cart.length === 0) {
-        alert('Cart is empty');
+        alert("Cart is empty");
         return;
       }
+
       let total = 0;
-      cart.forEach(item => { total += item.qty * item.price; });
+      cart.forEach(item => {
+        total += item.qty * item.price;
+      });
+
       const invoiceNo = generateInvoiceNumber();
       const now = new Date();
+
       const invoice = {
         number: invoiceNo,
         date: now.toISOString(),
-        customer: cartCustomerName.value.trim() || 'Walk-in',
+        customer: cartCustomerName.value.trim() || "Walk-in",
         notes: cartNotes.value.trim(),
         items: cart.map(c => ({ ...c })),
         total: total,
         returned: false
       };
+
       invoices.push(invoice);
       saveInvoices();
+
+      // REDUCE STOCK
       cart.forEach(item => {
         const p = products.find(p => p.code === item.code);
         if (p) {
@@ -1127,32 +1377,43 @@
           if (p.stock < 0) p.stock = 0;
         }
       });
+
       saveProducts();
-      alert('Invoice created: ' + invoiceNo);
+
+      alert("Invoice created: " + invoiceNo);
+
+      // RESET CART
       cart = [];
-      cartCustomerName.value = '';
-      cartNotes.value = '';
+      cartCustomerName.value = "";
+      cartNotes.value = "";
+
       renderCart();
       renderInventory();
       refreshDashboard();
       renderInvoices();
     });
+        /* -------------------------
+       EXPENSES SYSTEM
+    --------------------------*/
 
-    const expTitle = document.getElementById('expTitle');
-    const expAmount = document.getElementById('expAmount');
-    const expDate = document.getElementById('expDate');
-    const expNote = document.getElementById('expNote');
-    const expTableBody = document.querySelector('#expTable tbody');
-    const expTotal = document.getElementById('expTotal');
+    const expTitle = document.getElementById("expTitle");
+    const expAmount = document.getElementById("expAmount");
+    const expDate = document.getElementById("expDate");
+    const expNote = document.getElementById("expNote");
 
-    document.getElementById('btnAddExpense').addEventListener('click', () => {
+    const expTableBody = document.querySelector("#expTable tbody");
+    const expTotal = document.getElementById("expTotal");
+
+    document.getElementById("btnAddExpense").addEventListener("click", () => {
       const title = expTitle.value.trim();
-      const amount = parseFloat(expAmount.value || '0');
+      const amount = parseFloat(expAmount.value || "0");
       const date = expDate.value || todayStr();
+
       if (!title || amount <= 0) {
-        alert('Title and amount required');
+        alert("Title and amount required");
         return;
       }
+
       expenses.push({
         id: Date.now(),
         title,
@@ -1160,38 +1421,47 @@
         date,
         note: expNote.value.trim()
       });
+
       saveExpenses();
-      expTitle.value = '';
-      expAmount.value = '';
-      expDate.value = '';
-      expNote.value = '';
+
+      expTitle.value = "";
+      expAmount.value = "";
+      expDate.value = "";
+      expNote.value = "";
+
       renderExpenses();
       refreshDashboard();
     });
 
     function renderExpenses() {
-      expTableBody.innerHTML = '';
+      expTableBody.innerHTML = "";
       let total = 0;
+
       expenses.forEach(exp => {
         total += exp.amount;
-        const tr = document.createElement('tr');
+
+        const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${formatDate(exp.date)}</td>
           <td>${exp.title}</td>
-          <td>${exp.amount.toFixed(2)}</td>
+          <td>${exp.amount.toFixed(0)}</td>
           <td><button class="btn btn-danger btn-small" data-id="${exp.id}">X</button></td>
         `;
+
         expTableBody.appendChild(tr);
       });
-      expTotal.textContent = total.toFixed(2);
+
+      expTotal.textContent = total.toFixed(0);
     }
 
-    expTableBody.addEventListener('click', e => {
-      const btn = e.target.closest('button');
+    expTableBody.addEventListener("click", e => {
+      const btn = e.target.closest("button");
       if (!btn) return;
-      const id = parseInt(btn.getAttribute('data-id'), 10);
+
+      const id = parseInt(btn.getAttribute("data-id"), 10);
       const idx = expenses.findIndex(exp => exp.id === id);
-      if (idx >= 0 && confirm('Delete this expense?')) {
+
+      if (idx >= 0 && confirm("Delete this expense?")) {
         expenses.splice(idx, 1);
         saveExpenses();
         renderExpenses();
@@ -1199,13 +1469,19 @@
       }
     });
 
-    const invoiceTableBody = document.querySelector('#invoiceTable tbody');
-    const invoiceDetail = document.getElementById('invoiceDetail');
-    const invSearchInvoice = document.getElementById('invSearchInvoice');
+    /* -------------------------
+       INVOICE LIST + RETURN
+    --------------------------*/
+
+    const invoiceTableBody = document.querySelector("#invoiceTable tbody");
+    const invoiceDetail = document.getElementById("invoiceDetail");
+    const invSearchInvoice = document.getElementById("invSearchInvoice");
 
     function renderInvoices() {
-      invoiceTableBody.innerHTML = '';
+      invoiceTableBody.innerHTML = "";
+
       const search = invSearchInvoice.value.trim().toLowerCase();
+
       invoices.forEach((inv, index) => {
         if (
           search &&
@@ -1213,15 +1489,15 @@
             inv.number.toLowerCase().includes(search) ||
             inv.customer.toLowerCase().includes(search)
           )
-        ) {
-          return;
-        }
-        const tr = document.createElement('tr');
+        ) return;
+
+        const tr = document.createElement("tr");
+
         tr.innerHTML = `
           <td><button class="btn btn-secondary btn-small" data-index="${index}" data-action="view">${inv.number}</button></td>
           <td>${formatDate(inv.date)}</td>
           <td>${inv.customer}</td>
-          <td>${inv.total.toFixed(2)}</td>
+          <td>${inv.total.toFixed(0)}</td>
           <td>${inv.items.length}</td>
           <td>
             ${
@@ -1233,219 +1509,307 @@
             }
           </td>
         `;
+
         invoiceTableBody.appendChild(tr);
       });
-      document.getElementById('countInvoices').textContent =
-        'Invoices: ' + invoices.length;
-    }
 
-    invoiceTableBody.addEventListener('click', e => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      const index = parseInt(btn.getAttribute('data-index'), 10);
-      const action = btn.getAttribute('data-action');
-      const inv = invoices[index];
-      if (!inv) return;
-      if (action === 'view') {
-        showInvoiceDetail(inv);
-      } else if (action === 'return') {
-        if (inv.returned) {
-          alert('Already returned');
-          return;
-        }
-        if (!confirm('Mark this invoice as returned and add items back to stock?')) {
-          return;
-        }
-        inv.returned = true;
-        inv.items.forEach(item => {
-          const p = products.find(p => p.code === item.code);
-          if (p) {
-            p.stock += item.qty;
-          }
-        });
-        saveInvoices();
-        saveProducts();
-        renderInvoices();
-        renderInventory();
-        refreshDashboard();
-      }
-    });
+      document.getElementById("countInvoices").textContent =
+        "Invoices: " + invoices.length;
+    }
+    /* -------------------------
+       INVOICE DETAIL VIEW
+    --------------------------*/
 
     function showInvoiceDetail(inv) {
-      let html = '';
-      html += '<div><strong>Invoice:</strong> ' + inv.number + '</div>';
-      html += '<div><strong>Date:</strong> ' + formatDate(inv.date) + '</div>';
-      html += '<div><strong>Customer:</strong> ' + inv.customer + '</div>';
-      html += '<div><strong>Total:</strong> ' + inv.total.toFixed(2) + ' AED</div>';
-      html += '<div><strong>Returned:</strong> ' + (inv.returned ? 'Yes' : 'No') + '</div>';
+      let html = "";
+
+      html += "<div><strong>Invoice:</strong> " + inv.number + "</div>";
+      html += "<div><strong>Date:</strong> " + formatDate(inv.date) + "</div>";
+      html += "<div><strong>Customer:</strong> " + inv.customer + "</div>";
+      html += "<div><strong>Total:</strong> " + inv.total.toFixed(0) + " PKR</div>";
+      html += "<div><strong>Returned:</strong> " + (inv.returned ? "Yes" : "No") + "</div>";
+
       if (inv.notes) {
-        html += '<div><strong>Notes:</strong> ' + inv.notes + '</div>';
+        html += "<div><strong>Notes:</strong> " + inv.notes + "</div>";
       }
-      html += '<h4 style="margin-top:8px;">Items</h4>';
-      html += '<table style="width:100%;font-size:12px;border-collapse:collapse;">';
-      html +=
-        '<tr><th style="border:1px solid #333;padding:4px;">Item</th><th style="border:1px solid #333;padding:4px;">Qty</th><th style="border:1px solid #333;padding:4px;">Price</th><th style="border:1px solid #333;padding:4px;">Total</th></tr>';
+
+      html += "<h4 style='margin-top:8px;'>Items</h4>";
+      html += "<table style='width:100%;font-size:12px;border-collapse:collapse;'>";
+      html += "<tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
+
       inv.items.forEach(it => {
-        html +=
-          '<tr><td style="border:1px solid #333;padding:4px;">' +
-          it.name +
-          '</td><td style="border:1px solid #333;padding:4px;">' +
-          it.qty +
-          '</td><td style="border:1px solid #333;padding:4px;">' +
-          it.price.toFixed(2) +
-          '</td><td style="border:1px solid #333;padding:4px;">' +
-          (it.qty * it.price).toFixed(2) +
-          '</td></tr>';
+        html += `
+          <tr>
+            <td>${it.name}</td>
+            <td>${it.qty}</td>
+            <td>${it.price.toFixed(0)}</td>
+            <td>${(it.qty * it.price).toFixed(0)}</td>
+          </tr>
+        `;
       });
-      html += '</table>';
+
+      html += "</table>";
+
       invoiceDetail.innerHTML = html;
+      currentInvoiceForPrint = inv;
     }
 
-    invSearchInvoice.addEventListener('input', renderInvoices);
+    invSearchInvoice.addEventListener("input", renderInvoices);
 
-    const statTodaySales = document.getElementById('statTodaySales');
-    const statWeekSales = document.getElementById('statWeekSales');
-    const statMonthSales = document.getElementById('statMonthSales');
-    const statProfit = document.getElementById('statProfit');
-    const countProducts = document.getElementById('countProducts');
-    const countLowStock = document.getElementById('countLowStock');
-    const countHotSale = document.getElementById('countHotSale');
-    const dashboardStockTableBody = document.querySelector('#dashboardStockTable tbody');
+    /* -------------------------
+       DASHBOARD (Daily + Monthly + Profit)
+    --------------------------*/
+
+    const statTodaySales = document.getElementById("statTodaySales");
+    const statMonthSales = document.getElementById("statMonthSales");
+    const statProfit = document.getElementById("statProfit");
+    const statMargin = document.getElementById("statMargin");
+
+    const countProducts = document.getElementById("countProducts");
+    const countLowStock = document.getElementById("countLowStock");
+    const countHotSale = document.getElementById("countHotSale");
+
+    const dashboardStockTableBody = document.querySelector("#dashboardStockTable tbody");
 
     function refreshDashboard() {
-      countProducts.textContent = 'Products: ' + products.length;
+      countProducts.textContent = "Products: " + products.length;
+
       const low = products.filter(p => p.stock <= p.lowStock).length;
       const hot = products.filter(p => p.hotSale).length;
-      countLowStock.textContent = 'Low Stock: ' + low;
-      countHotSale.textContent = 'Hot Sale: ' + hot;
+
+      countLowStock.textContent = "Low Stock: " + low;
+      countHotSale.textContent = "Hot Sale: " + hot;
 
       let todaySales = 0;
-      let weekSales = 0;
       let monthSales = 0;
       let totalSales = 0;
 
       const now = new Date();
-      const currentWeek = weekOfYear(now);
       const currentMonth = monthKey(now);
 
       invoices.forEach(inv => {
         const d = new Date(inv.date);
         const amount = inv.total;
+
         totalSales += amount;
+
         if (sameDay(d, now)) todaySales += amount;
-        if (weekOfYear(d) === currentWeek && d.getFullYear() === now.getFullYear()) {
-          weekSales += amount;
-        }
-        if (monthKey(d) === currentMonth) {
-          monthSales += amount;
-        }
+        if (monthKey(d) === currentMonth) monthSales += amount;
       });
 
       let totalExpenses = 0;
-      expenses.forEach(exp => { totalExpenses += exp.amount; });
+      expenses.forEach(exp => (totalExpenses += exp.amount));
 
       const profit = totalSales - totalExpenses;
+      const margin = totalSales > 0 ? (profit / totalSales) * 100 : 0;
 
-      statTodaySales.textContent = todaySales.toFixed(2);
-      statWeekSales.textContent = weekSales.toFixed(2);
-      statMonthSales.textContent = monthSales.toFixed(2);
-      statProfit.textContent = profit.toFixed(2);
+      statTodaySales.textContent = todaySales.toFixed(0);
+      statMonthSales.textContent = monthSales.toFixed(0);
+
+      statProfit.textContent = profit.toFixed(0);
       statProfit.className =
-        'stat-value ' + (profit >= 0 ? 'stat-positive' : 'stat-negative');
+        "stat-value " + (profit >= 0 ? "stat-positive" : "stat-negative");
 
-      dashboardStockTableBody.innerHTML = '';
+      statMargin.textContent = margin.toFixed(1) + "%";
+
+      dashboardStockTableBody.innerHTML = "";
+
       products.forEach(p => {
         if (!(p.stock <= p.lowStock || p.hotSale)) return;
-        const tr = document.createElement('tr');
+
+        const tr = document.createElement("tr");
+
         const tags = [];
         if (p.stock <= p.lowStock) tags.push('<span class="tag tag-low">Low</span>');
         if (p.hotSale) tags.push('<span class="tag tag-hot">Hot</span>');
+
         tr.innerHTML = `
           <td>${p.code}</td>
           <td>${p.name}</td>
           <td>${p.category}</td>
           <td>${p.stock}</td>
-          <td>${tags.join(' ')}</td>
+          <td>${tags.join(" ")}</td>
         `;
+
         dashboardStockTableBody.appendChild(tr);
       });
     }
+          /* -------------------------
+       PRINTING (Slip + A4)
+    --------------------------*/
 
-    const setUser = document.getElementById('setUser');
-    const setPass = document.getElementById('setPass');
-    const btnSaveLogin = document.getElementById('btnSaveLogin');
-    const btnExportData = document.getElementById('btnExportData');
-    const btnClearAllData = document.getElementById('btnClearAllData');
-    const btnImportData = document.getElementById('btnImportData');
-    const backupJson = document.getElementById('backupJson');
+    let currentInvoiceForPrint = null;
 
-    btnSaveLogin.addEventListener('click', () => {
-      const u = setUser.value.trim();
-      const p = setPass.value.trim();
-      if (!u || !p) {
-        alert('Username and password required');
+    function openPrintWindow(html, title) {
+      const w = window.open("", "_blank", "width=600,height=800");
+
+      if (!w) {
+        alert("Popup blocked. Allow popups to print.");
         return;
       }
-      localStorage.setItem(KEY_LOGIN, JSON.stringify({ username: u, password: p }));
-      alert('Login updated. Use new credentials next time.');
+
+      w.document.write(`
+        <html>
+          <head>
+            <title>${title}</title>
+            <style>
+              body { font-family: Arial, sans-serif; font-size: 12px; }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { border: 1px solid #000; padding: 4px; }
+              h3 { margin: 4px 0; }
+            </style>
+          </head>
+          <body>${html}</body>
+        </html>
+      `);
+
+      w.document.close();
+      w.focus();
+      w.print();
+    }
+
+    // PRINT SLIP
+    document.getElementById("btnPrintSlip").addEventListener("click", () => {
+      if (!currentInvoiceForPrint) {
+        alert("Select an invoice first");
+        return;
+      }
+
+      const inv = currentInvoiceForPrint;
+
+      let html = "";
+      html += "<h3 style='text-align:center;'>Hoorian Cosmetics & Jewelry</h3>";
+      html += "<hr/>";
+      html += "<div>Invoice: " + inv.number + "</div>";
+      html += "<div>Date: " + formatDate(inv.date) + "</div>";
+      html += "<div>Customer: " + inv.customer + "</div>";
+      html += "<hr/>";
+      html += "<table>";
+      html += "<tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
+
+      let total = 0;
+
+      inv.items.forEach(it => {
+        const line = it.qty * it.price;
+        total += line;
+
+        html += `
+          <tr>
+            <td>${it.name}</td>
+            <td>${it.qty}</td>
+            <td>${it.price.toFixed(0)}</td>
+            <td>${line.toFixed(0)}</td>
+          </tr>
+        `;
+      });
+
+      html += "</table>";
+      html += "<hr/>";
+      html += "<strong>Total: " + total.toFixed(0) + " PKR</strong>";
+
+      openPrintWindow(html, "Invoice Slip");
     });
 
-    btnExportData.addEventListener('click', () => {
+    // PRINT A4
+    document.getElementById("btnPrintA4").addEventListener("click", () => {
+      if (!currentInvoiceForPrint) {
+        alert("Select an invoice first");
+        return;
+      }
+
+      const inv = currentInvoiceForPrint;
+
+      let html = "";
+      html += "<h2>Hoorian Cosmetics & Jewelry</h2>";
+      html += "<hr/>";
+      html += "<div><strong>Invoice:</strong> " + inv.number + "</div>";
+      html += "<div><strong>Date:</strong> " + formatDate(inv.date) + "</div>";
+      html += "<div><strong>Customer:</strong> " + inv.customer + "</div>";
+      html += "<hr/>";
+      html += "<table>";
+      html += "<tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
+
+      let total = 0;
+
+      inv.items.forEach(it => {
+        const line = it.qty * it.price;
+        total += line;
+
+        html += `
+          <tr>
+            <td>${it.name}</td>
+            <td>${it.qty}</td>
+            <td>${it.price.toFixed(0)}</td>
+            <td>${line.toFixed(0)}</td>
+          </tr>
+        `;
+      });
+
+      html += "</table>";
+      html += "<h3>Total: " + total.toFixed(0) + " PKR</h3>";
+
+      openPrintWindow(html, "Invoice A4");
+    });
+          /* -------------------------
+       BACKUP / RESTORE
+    --------------------------*/
+
+    const setUser = document.getElementById("setUser");
+    const setPass = document.getElementById("setPass");
+    const btnSaveLogin = document.getElementById("btnSaveLogin");
+    const btnExportData = document.getElementById("btnExportData");
+    const btnClearAllData = document.getElementById("btnClearAllData");
+    const btnImportData = document.getElementById("btnImportData");
+    const backupJson = document.getElementById("backupJson");
+
+    btnSaveLogin.addEventListener("click", () => {
+      const u = setUser.value.trim();
+      const p = setPass.value.trim();
+      if (!u || !p) return alert("Username & password required");
+      localStorage.setItem(KEY_LOGIN, JSON.stringify({ username: u, password: p }));
+      alert("Login updated");
+    });
+
+    btnExportData.addEventListener("click", () => {
       const data = {
         products,
         invoices,
         expenses,
-        login: JSON.parse(localStorage.getItem(KEY_LOGIN) || 'null')
+        login: JSON.parse(localStorage.getItem(KEY_LOGIN) || "null")
       };
       backupJson.value = JSON.stringify(data, null, 2);
-      alert('Data exported to text area. Copy and save it.');
+      alert("Data exported below");
     });
 
-    btnImportData.addEventListener('click', () => {
-      if (!backupJson.value.trim()) {
-        alert('Paste JSON data first');
-        return;
-      }
+    btnImportData.addEventListener("click", () => {
+      if (!backupJson.value.trim()) return alert("Paste JSON first");
       try {
         const data = JSON.parse(backupJson.value);
-        if (data.products) {
-          products = data.products;
-          saveProducts();
-        }
-        if (data.invoices) {
-          invoices = data.invoices;
-          saveInvoices();
-        }
-        if (data.expenses) {
-          expenses = data.expenses;
-          saveExpenses();
-        }
-        if (data.login) {
-          localStorage.setItem(KEY_LOGIN, JSON.stringify(data.login));
-        }
-        alert('Data imported');
+        if (data.products) { products = data.products; saveProducts(); }
+        if (data.invoices) { invoices = data.invoices; saveInvoices(); }
+        if (data.expenses) { expenses = data.expenses; saveExpenses(); }
+        if (data.login) localStorage.setItem(KEY_LOGIN, JSON.stringify(data.login));
+        alert("Data imported");
         refreshAll();
-      } catch (e) {
-        alert('Invalid JSON');
+      } catch {
+        alert("Invalid JSON");
       }
     });
 
-    btnClearAllData.addEventListener('click', () => {
-      if (!confirm('This will clear all products, invoices, expenses and login. Continue?')) {
-        return;
-      }
+    btnClearAllData.addEventListener("click", () => {
+      if (!confirm("Clear ALL data?")) return;
       localStorage.removeItem(KEY_PRODUCTS);
       localStorage.removeItem(KEY_INVOICES);
       localStorage.removeItem(KEY_EXPENSES);
       localStorage.removeItem(KEY_LOGIN);
-      products = [];
-      invoices = [];
-      expenses = [];
-      cart = [];
-      loadData();
-      refreshAll();
-      alert('All data cleared. Default login: admin / admin');
+      products = []; invoices = []; expenses = []; cart = [];
+      loadData(); refreshAll();
+      alert("All data cleared. Default login restored.");
     });
+
+    /* -------------------------
+       INIT APP
+    --------------------------*/
 
     function refreshAll() {
       renderInventory();
@@ -1454,103 +1818,28 @@
       renderExpenses();
       renderInvoices();
       refreshDashboard();
-      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || 'null');
-      if (login) {
-        setUser.value = login.username;
-        setPass.value = login.password;
-      }
+      const login = JSON.parse(localStorage.getItem(KEY_LOGIN) || "null");
+      if (login) { setUser.value = login.username; setPass.value = login.password; }
     }
 
     loadData();
     updateHeaderDate();
     refreshAll();
+
     const savedLang = localStorage.getItem(KEY_LANG) || "EN";
     applyLanguage(savedLang);
-    document.getElementById("btnLangEN").addEventListener("click", () => { applyLanguage("EN"); });
-    document.getElementById("btnLangUR").addEventListener("click", () => { applyLanguage("UR"); });
 
-    (function setupPWA() {
-      const svgIcon = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-          <defs>
-            <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="#000000"/>
-              <stop offset="100%" stop-color="#2b0b1a"/>
-            </linearGradient>
-            <linearGradient id="lip" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stop-color="#ff9ac5"/>
-              <stop offset="100%" stop-color="#ff4f9a"/>
-            </linearGradient>
-            <linearGradient id="ring" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stop-color="#ffd27f"/>
-              <stop offset="100%" stop-color="#ffb300"/>
-            </linearGradient>
-          </defs>
-          <rect width="512" height="512" fill="url(#bg)" rx="120" ry="120"/>
-          <circle cx="340" cy="190" r="80" fill="none" stroke="url(#ring)" stroke-width="18"/>
-          <circle cx="340" cy="190" r="50" fill="none" stroke="#000000" stroke-opacity="0.6" stroke-width="10"/>
-          <rect x="140" y="160" width="80" height="210" rx="18" fill="#222222"/>
-          <rect x="150" y="170" width="60" height="150" rx="12" fill="#444444"/>
-          <path d="M140 160 L180 90 L220 160 Z" fill="url(#lip)"/>
-          <rect x="160" y="180" width="18" height="120" rx="9" fill="#ffffff" fill-opacity="0.25"/>
-          <text x="50%" y="430" text-anchor="middle" fill="#ff9ac5" font-size="44" font-family="Arial" font-weight="bold">
-            Hoorian
-          </text>
-        </svg>
-      `;
-      const svgBlob = new Blob([svgIcon], { type: 'image/svg+xml' });
-      const svgUrl = URL.createObjectURL(svgBlob);
+    document.getElementById("btnLangEN").addEventListener("click", () => applyLanguage("EN"));
+    document.getElementById("btnLangUR").addEventListener("click", () => applyLanguage("UR"));
 
-      const manifest = {
-        name: "Hoorian Cosmetics & Jewelry POS",
-        short_name: "Hoorian POS",
-        start_url: ".",
-        display: "standalone",
-        background_color: "#000000",
-        theme_color: "#000000",
-        icons: [
-          { src: svgUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any" },
-          { src: svgUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-        ]
-      };
-      const manifestBlob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-      const manifestUrl = URL.createObjectURL(manifestBlob);
-      const link = document.createElement("link");
-      link.rel = "manifest";
-      link.href = manifestUrl;
-      document.head.appendChild(link);
-
-      if ("serviceWorker" in navigator) {
-        const swCode = `
-          const CACHE_NAME = "hoorian-pos-cache-v1";
-          const OFFLINE_URLS = ["./"];
-          self.addEventListener("install", event => {
-            event.waitUntil(
-              caches.open(CACHE_NAME).then(cache => cache.addAll(OFFLINE_URLS))
-            );
-          });
-          self.addEventListener("activate", event => {
-            event.waitUntil(
-              caches.keys().then(keys =>
-                Promise.all(
-                  keys.map(k => (k === CACHE_NAME ? null : caches.delete(k)))
-                )
-              )
-            );
-          });
-          self.addEventListener("fetch", event => {
-            event.respondWith(
-              caches.match(event.request).then(resp => {
-                return resp || fetch(event.request).catch(() => caches.match("./"));
-              })
-            );
-          });
-        `;
-        const swBlob = new Blob([swCode], { type: "application/javascript" });
-        const swUrl = URL.createObjectURL(swBlob);
-        navigator.serviceWorker.register(swUrl).catch(() => {});
-      }
-    })();
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
